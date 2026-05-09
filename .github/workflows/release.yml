@@ -103,17 +103,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ccache
-        uses: ggml-org/ccache-action@v1.2.21
-        with:
-          key: ubuntu-24-cuda13-x64
-          evict-old-files: 1d
-
       - name: Install dependencies
         id: depends
         run: |
           apt update
           apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev
+
+      - name: ccache
+        uses: ggml-org/ccache-action@v1.2.21
+        with:
+          key: ubuntu-24-cuda13-x64
+          evict-old-files: 1d
+          save: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
 
       - name: Toolchain workaround (GCC 14)
         run: |
