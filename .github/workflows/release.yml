@@ -137,6 +137,7 @@ jobs:
         id: move_artifacts
         run: |
           mkdir -p release
+          ls -la
           
           echo "Moving other artifacts..."
           mv -v artifact/*.zip release
