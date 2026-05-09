@@ -138,6 +138,8 @@ jobs:
         run: |
           mkdir -p release
           ls -la
+          ls -la artifact/*.zip
+          
           
           echo "Moving other artifacts..."
           mv -v artifact/*.zip release
