@@ -126,6 +126,8 @@ jobs:
         id: cmake_build
         run: |
           cmake -S . -B build -G Ninja \
+            -DCMAKE_INSTALL_RPATH='$ORIGIN' \
+            -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
             -DLLAMA_FATAL_WARNINGS=ON \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CUDA_ARCHITECTURES="90-real;89-real" \
@@ -133,7 +135,8 @@ jobs:
             -DGGML_NATIVE=OFF \
             -DGGML_CUDA=ON \
             -DGGML_CUDA_CUB_3DOT2=ON
-          cmake --build build
+            ${{ env.CMAKE_ARGS }}
+          cmake --build build --config Release -j $(nproc)
 
       - name: Determine tag name
         id: tag
