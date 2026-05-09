@@ -94,20 +94,12 @@ jobs:
 
   ubuntu-24-cuda13:
     runs-on: ubuntu-24.04
-    container: nvidia/cuda:13.0.0-devel-ubuntu24.04
-
     steps:
       - name: Clone
         id: checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Install dependencies
-        id: depends
-        run: |
-          apt update
-          apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev
 
       - name: ccache
         uses: ggml-org/ccache-action@v1.2.21
@@ -116,27 +108,41 @@ jobs:
           evict-old-files: 1d
           save: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
 
-      - name: Toolchain workaround (GCC 14)
-        run: |
-          apt-get install -y gcc-14 g++-14
-          echo "CC=gcc-14" >> "$GITHUB_ENV"
-          echo "CXX=g++-14" >> "$GITHUB_ENV"
+      - name: Pull container image
+        run: docker pull nvidia/cuda:13.0.0-devel-ubuntu24.04
 
       - name: Build
-        id: cmake_build
         run: |
-          cmake -S . -B build -G Ninja \
-            -DCMAKE_INSTALL_RPATH='$ORIGIN' \
-            -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
-            -DLLAMA_FATAL_WARNINGS=ON \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_CUDA_ARCHITECTURES="90-real;89-real" \
-            -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined \
-            -DGGML_NATIVE=OFF \
-            -DGGML_CUDA=ON \
-            -DGGML_CUDA_CUB_3DOT2=ON \
-            ${{ env.CMAKE_ARGS }}
-          cmake --build build --config Release -j $(nproc)
+          HOST_UID=$(id -u)
+          HOST_GID=$(id -g)
+
+          docker run --rm \
+            -v "${PWD}:/workspace" \
+            -w /workspace \
+            nvidia/cuda:13.0.0-devel-ubuntu24.04 \
+            bash -lc '
+              set -e
+              apt update
+              apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev
+              apt-get install -y gcc-14 g++-14
+              echo "CC=gcc-14" >> "$GITHUB_ENV"
+              echo "CXX=g++-14" >> "$GITHUB_ENV"
+              git config --global --add safe.directory "/workspace"
+              cmake -S . -B build -G Ninja \
+                -DCMAKE_INSTALL_RPATH='$ORIGIN' \
+                -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
+                -DLLAMA_FATAL_WARNINGS=ON \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_CUDA_ARCHITECTURES="90-real;89-real" \
+                -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined \
+                -DGGML_NATIVE=OFF \
+                -DGGML_CUDA=ON \
+                -DGGML_CUDA_CUB_3DOT2=ON \
+                ${{ env.CMAKE_ARGS }}
+              cmake --build build --config Release -j $(nproc)
+
+              chown -R '"${HOST_UID}"':'"${HOST_GID}"' /workspace/build
+            '
 
       - name: Determine tag name
         id: tag
