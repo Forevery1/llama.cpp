@@ -190,7 +190,6 @@ jobs:
               set -e
               apt update
               apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev
-              apt-get install -y gcc-14 g++-14
               git config --global --add safe.directory "/workspace"
               cmake -S . -B build -G Ninja \
                 -DCMAKE_INSTALL_RPATH='$ORIGIN' \
