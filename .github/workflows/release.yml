@@ -251,6 +251,13 @@ jobs:
           mkdir -p release
           echo "Moving other artifacts..."
           mv -v artifact/*.tar.gz release
+      
+      - name: Generate SHA256 checksums
+        id: checksums
+        run: |
+          sha256sum ./release/*.tar.gz > ./release/SHA256SUMS.txt
+          cat ./release/SHA256SUMS.txt
+
       - name: Create release
         id: create_release
         uses: ggml-org/action-create-release@v1
@@ -262,9 +269,6 @@ jobs:
             <details open>
             ${{ github.event.head_commit.message }}
             </details>
-            **Linux:**
-            - [Ubuntu x64 (CPU)](https://github.com/ggml-org/llama.cpp/releases/download/${{ steps.tag.outputs.name }}/llama-${{ steps.tag.outputs.name }}-bin-ubuntu-x64.tar.gz)
-            - [Ubuntu x64 (CUDA)](https://github.com/ggml-org/llama.cpp/releases/download/${{ steps.tag.outputs.name }}/llama-${{ steps.tag.outputs.name }}-bin-ubuntu-24-cuda13-x64.tar.gz)
       - name: Upload release
         id: upload_release
         uses: actions/github-script@v8
@@ -275,7 +279,7 @@ jobs:
             const fs = require('fs');
             const release_id = '${{ steps.create_release.outputs.id }}';
             for (let file of await fs.readdirSync('./release')) {
-              if (path.extname(file) === '.zip' || file.endsWith('.tar.gz')) {
+              if (path.extname(file) === '.zip' || file.endsWith('.tar.gz') || file === 'SHA256SUMS.txt')
                 console.log('uploadReleaseAsset', file);
                 await github.rest.repos.uploadReleaseAsset({
                   owner: context.repo.owner,
