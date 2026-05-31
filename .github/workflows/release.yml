@@ -118,7 +118,7 @@ jobs:
             bash -lc '
               set -e
               apt update
-              apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev
+              apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev ccache
               apt-get install -y gcc-14 g++-14
               git config --global --add safe.directory "/workspace"
               cmake -S . -B build -G Ninja \
@@ -180,7 +180,7 @@ jobs:
             bash -lc '
               set -e
               apt update
-              apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev
+              apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev ccache
               git config --global --add safe.directory "/workspace"
               cmake -S . -B build -G Ninja \
                 -DCMAKE_INSTALL_RPATH='$ORIGIN' \
@@ -247,7 +247,7 @@ jobs:
               dnf update -y
               
               # 安装基础编译工具
-              dnf install -y wget gcc g++ gcc-c++ make cmake git ninja-build openssl-devel kernel-devel
+              dnf install -y wget gcc g++ gcc-c++ make cmake git ninja-build openssl-devel kernel-devel ccache
               
               # 安装 NCCL（从 NVIDIA 源）
               dnf install -y libnccl libnccl-devel
