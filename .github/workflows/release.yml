@@ -252,6 +252,7 @@ jobs:
               # 安装 NCCL（从 NVIDIA 源）
               dnf install -y libnccl libnccl-devel
               # 下载并安装 CUDA
+              echo "Downloading and installing CUDA Toolkit 13.3..."
               wget -q https://developer.download.nvidia.com/compute/cuda/13.3.0/local_installers/cuda_13.3.0_610.43.02_linux.run -O /tmp/cuda-toolkit.run
               bash /tmp/cuda-toolkit.run --silent --toolkit
               
