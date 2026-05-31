@@ -240,6 +240,7 @@ jobs:
             openeuler/openeuler:22.03-lts-sp3 \
             bash -lc '
               set -e
+              curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
               dnf update -y
               dnf install -y wget gcc g++ gcc-c++ make cmake git ninja-build libnccl libnccl-devel openssl-devel
               wget -q https://developer.download.nvidia.com/compute/cuda/13.3.0/local_installers/cuda_13.3.0_610.43.02_linux.run -O /tmp/cuda-toolkit.run
