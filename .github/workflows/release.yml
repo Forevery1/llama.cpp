@@ -242,7 +242,7 @@ jobs:
               set -e
               dnf update -y
               dnf install -y wget gcc g++ gcc-c++ make cmake git ninja-build
-              wget https://developer.download.nvidia.com/compute/cuda/13.3.0/local_installers/cuda_13.3.0_610.43.02_linux.run -O /tmp/cuda-toolkit.run
+              wget -q https://developer.download.nvidia.com/compute/cuda/13.3.0/local_installers/cuda_13.3.0_610.43.02_linux.run -O /tmp/cuda-toolkit.run
               bash /tmp/cuda-toolkit.run --silent --toolkit
               export PATH=/usr/local/cuda/bin:$PATH
               export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
