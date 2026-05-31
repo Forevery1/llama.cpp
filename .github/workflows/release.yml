@@ -242,6 +242,8 @@ jobs:
               set -e
               dnf update -y
               dnf install -y wget gcc g++ gcc-c++ make cmake git ninja-build
+              wget https://developer.download.nvidia.com/compute/cuda/13.3.0/local_installers/cuda_13.3.0_610.43.02_linux.run -O /tmp/cuda-toolkit.run
+              bash /tmp/cuda-toolkit.run --silent --toolkit
               git config --global --add safe.directory "/workspace"
               cmake -S . -B build -G Ninja \
                 -DCMAKE_INSTALL_RPATH='$ORIGIN' \
