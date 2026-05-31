@@ -241,7 +241,13 @@ jobs:
             bash -lc '
               set -e
               # 添加 NVIDIA 源
-              curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+              cat > /etc/yum.repos.d/cuda.repo << 'EOF'
+              [cuda]
+              name=cuda
+              baseurl=https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/
+              enabled=1
+              gpgcheck=0
+              EOF
               
               # 更新源
               dnf update -y
