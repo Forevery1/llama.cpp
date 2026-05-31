@@ -242,6 +242,7 @@ jobs:
               set -e
               # 添加 NVIDIA 源
               sed -i "s|http://repo.openeuler.org|https://mirrors.dotsrc.org/openeuler|g" /etc/yum.repos.d/openEuler.repo
+              sed -i "s|https://repo.openeuler.org|https://mirrors.dotsrc.org/openeuler|g" /etc/yum.repos.d/openEuler.repo
               echo -e "[cuda]\nname=cuda\nbaseurl=https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/\nenabled=1\ngpgcheck=0" > /etc/yum.repos.d/cuda.repo
               
               # 更新源
