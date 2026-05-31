@@ -241,19 +241,13 @@ jobs:
             bash -lc '
               set -e
               # 添加 NVIDIA 源
-              cat > /etc/yum.repos.d/cuda.repo << 'EOF'
-              [cuda]
-              name=cuda
-              baseurl=https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/
-              enabled=1
-              gpgcheck=0
-              EOF
+              echo -e "[cuda]\nname=cuda\nbaseurl=https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/\nenabled=1\ngpgcheck=0" > /etc/yum.repos.d/cuda.repo
               
               # 更新源
               dnf update -y
               
               # 安装基础编译工具
-              dnf install -y wget gcc g++ gcc-c++ make cmake git ninja-build openssl-devel
+              dnf install -y wget gcc g++ gcc-c++ make cmake git ninja-build openssl-devel kernel-devel
               
               # 安装 NCCL（从 NVIDIA 源）
               dnf install -y libnccl libnccl-devel
