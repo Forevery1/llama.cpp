@@ -166,12 +166,15 @@ jobs:
             bash -lc '
               set -e
               apt update
-              apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev ccache gcc-12 g++-12
+              apt install -y cmake build-essential ninja-build libgomp1 git libssl-dev ccache software-properties-common
+              add-apt-repository -y ppa:ubuntu-toolchain-r/test
+              apt update
+              apt install -y gcc-13 g++-13
               git config --global --add safe.directory "/workspace"
               cmake -S . -B build -G Ninja \
-                -DCMAKE_C_COMPILER=gcc-12 \
-                -DCMAKE_CXX_COMPILER=g++-12 \
-                -DCMAKE_CUDA_HOST_COMPILER=g++-12 \
+                -DCMAKE_C_COMPILER=gcc-13 \
+                -DCMAKE_CXX_COMPILER=g++-13 \
+                -DCMAKE_CUDA_HOST_COMPILER=g++-13 \
                 -DCMAKE_INSTALL_RPATH='$ORIGIN' \
                 -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
                 -DLLAMA_FATAL_WARNINGS=ON \
