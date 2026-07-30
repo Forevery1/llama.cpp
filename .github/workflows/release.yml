@@ -186,6 +186,9 @@ jobs:
                 -DGGML_CUDA_CUB_3DOT2=ON \
                 ${{ env.CMAKE_ARGS }}
               cmake --build build --config Release -j $(nproc)
+              # 打包 gcc-13 的 libstdc++/libgcc_s，借助 $ORIGIN rpath 让产物可在更老系统运行
+              cp -L /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /workspace/build/bin/
+              cp -L /lib/x86_64-linux-gnu/libgcc_s.so.1 /workspace/build/bin/
               chown -R '"${HOST_UID}"':'"${HOST_GID}"' /workspace/build
             '
       - name: Determine tag name
