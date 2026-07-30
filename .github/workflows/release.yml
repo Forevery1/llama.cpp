@@ -171,6 +171,7 @@ jobs:
               cmake -S . -B build -G Ninja \
                 -DCMAKE_C_COMPILER=gcc-12 \
                 -DCMAKE_CXX_COMPILER=g++-12 \
+                -DCMAKE_CUDA_HOST_COMPILER=g++-12 \
                 -DCMAKE_INSTALL_RPATH='$ORIGIN' \
                 -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
                 -DLLAMA_FATAL_WARNINGS=ON \
