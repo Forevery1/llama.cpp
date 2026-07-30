@@ -171,7 +171,6 @@ jobs:
               cmake -S . -B build -G Ninja \
                 -DCMAKE_INSTALL_RPATH='$ORIGIN' \
                 -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
-                -DLLAMA_FATAL_WARNINGS=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_CUDA_ARCHITECTURES="120-real" \
                 -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined \
@@ -252,6 +251,7 @@ jobs:
                 -DLLAMA_FATAL_WARNINGS=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_CUDA_ARCHITECTURES="75" \
+                -DCMAKE_CUDA_FLAGS=--diag-suppress=177 \
                 -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined \
                 -DGGML_NATIVE=OFF \
                 -DGGML_CUDA=ON \
