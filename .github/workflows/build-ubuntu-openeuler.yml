@@ -88,8 +88,8 @@ jobs:
           path: llama-${{ steps.tag.outputs.name }}-bin-ubuntu-x64.tar.gz
           name: llama-bin-ubuntu-x64.tar.gz
 
-  ubuntu-24-cuda13:
-    runs-on: ubuntu-24.04
+  ubuntu-26-cuda13:
+    runs-on: ubuntu-26.04
     steps:
       - name: Clone
         id: checkout
@@ -98,7 +98,7 @@ jobs:
           fetch-depth: 0
 
       - name: Pull container image
-        run: docker pull nvidia/cuda:13.0.0-devel-ubuntu24.04
+        run: docker pull nvidia/cuda:13.0.0-devel-ubuntu26.04
 
       - name: Build
         run: |
@@ -107,7 +107,7 @@ jobs:
           docker run --rm \
             -v "${PWD}:/workspace" \
             -w /workspace \
-            nvidia/cuda:13.0.0-devel-ubuntu24.04 \
+            nvidia/cuda:13.0.0-devel-ubuntu26.04 \
             bash -lc '
               set -e
               apt update
@@ -136,12 +136,12 @@ jobs:
         id: pack_artifacts
         run: |
           cp LICENSE ./build/bin/
-          tar -czvf llama-${{ steps.tag.outputs.name }}-bin-ubuntu-24-cuda13-x64.tar.gz --transform "s,./,llama-${{ steps.tag.outputs.name }}/," -C ./build/bin .
+          tar -czvf llama-${{ steps.tag.outputs.name }}-bin-ubuntu-26-cuda13-x64.tar.gz --transform "s,./,llama-${{ steps.tag.outputs.name }}/," -C ./build/bin .
       - name: Upload artifacts
         uses: actions/upload-artifact@v6
         with:
           path: llama-${{ steps.tag.outputs.name }}-bin-ubuntu-24-cuda13-x64.tar.gz
-          name: llama-bin-ubuntu-24-cuda13-x64.tar.gz
+          name: llama-bin-ubuntu-26-cuda13-x64.tar.gz
 
   ubuntu-22-cuda13:
     runs-on: ubuntu-22.04
@@ -298,7 +298,7 @@ jobs:
 
     needs:
       - ubuntu-24-cpu
-      - ubuntu-24-cuda13
+      - ubuntu-26-cuda13
       - ubuntu-22-cuda13
       - openeuler-2203-cuda13
 
