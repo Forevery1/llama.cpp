@@ -98,7 +98,7 @@ jobs:
           fetch-depth: 0
 
       - name: Pull container image
-        run: docker pull nvidia/cuda:13.0.0-devel-ubuntu26.04
+        run: docker pull nvidia/cuda:13.5.0-devel-ubuntu26.04
 
       - name: Build
         run: |
@@ -107,7 +107,7 @@ jobs:
           docker run --rm \
             -v "${PWD}:/workspace" \
             -w /workspace \
-            nvidia/cuda:13.0.0-devel-ubuntu26.04 \
+            nvidia/cuda:13.5.0-devel-ubuntu26.04 \
             bash -lc '
               set -e
               apt update
